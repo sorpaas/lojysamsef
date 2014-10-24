@@ -13,7 +13,7 @@ Cabal-version:       >=1.2
 extra-source-files:	examples/pendo.jbo, examples/skari.jbo, examples/patfu.jbo
     examples/cidja.jbo, examples/mlatu.jbo
 
-Executable snap-test
+Executable lojysamsef
   hs-source-dirs: src
   main-is: Main.hs
 
