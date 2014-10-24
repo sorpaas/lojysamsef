@@ -23,7 +23,7 @@ Executable snap-test
     MonadCatchIO-transformers >= 0.2.1 && < 0.4,
     mtl                       >= 2     && < 3,
     snap-core                 >= 0.9   && < 0.10,
-    snap-server               >= 0.9   && < 0.10
+    snap-server               >= 0.9   && < 0.10,
     lojbanParser              >= 0.1.2,
     yjtools                   >= 0.9.16
 
