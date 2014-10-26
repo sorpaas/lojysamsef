@@ -14,6 +14,8 @@ import Snap.Core
 import Snap.Util.FileServe
 import Snap.Http.Server
 import Data.ByteString.Char8(pack)
+import Data.Text.Encoding(decodeUtf8)
+import Data.Text(unpack)
 
 main :: IO ()
 -- main = do
@@ -44,5 +46,6 @@ answerQuestion q =
 
 echoHandler :: Snap ()
 echoHandler = do
+    param <- getParam "question"
     maybe (writeBS "must specify echo/param in URL")
-          (writeBS . pack) (answerQuestion "ma rirni la .ituk.")
+          (writeBS . pack) (answerQuestion $ (unpack . decodeUtf8) (maybe (pack "ma rirni la .ituk.") (\s -> s) param))
