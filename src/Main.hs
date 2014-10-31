@@ -13,9 +13,11 @@ import Control.Applicative
 import Snap.Core
 import Snap.Util.FileServe
 import Snap.Http.Server
+import Snap.Extras.JSON(writeJSON)
 import Data.ByteString.Char8(pack)
 import Data.Text.Encoding(decodeUtf8)
 import Data.Text(unpack)
+import Data.Aeson
 
 main :: IO ()
 -- main = do
@@ -32,11 +34,35 @@ main :: IO ()
 -- main :: IO ()
 main = quickHttpServe site
 
+data Person  = Person {
+  name :: String
+  } deriving (Show)
+instance ToJSON Person where
+  toJSON (Person s) = object ["name" .= s]
+
+data AnswerResult = AnswerResult {
+  result :: String
+  } deriving (Show)
+instance ToJSON AnswerResult where
+  toJSON (AnswerResult s) = object ["result" .= s]
+
+data AnswerError = AnswerError {
+  error :: String
+  } deriving (Show)
+instance ToJSON AnswerError where
+  toJSON (AnswerError s) = object ["error" .= s]
+
+data Info = Info {
+  application :: String
+  } deriving (Show)
+instance ToJSON Info where
+  toJSON (Info s) = object ["application" .= s]
+
 site :: Snap ()
 site =
-    ifTop (writeBS "hello world") <|>
-    route [ ("foo", writeBS "bar")
-          , ("echo", echoHandler)
+    ifTop (writeJSON $ Person "me") <|>
+    route [ ("info", writeJSON $ Info "lojysamsef")
+          , ("ask", askHandler)
           ] <|>
     dir "static" (serveDirectory ".")
 
@@ -44,8 +70,15 @@ answerQuestion :: String -> Maybe String
 answerQuestion q =
   ask q $ readRules ".i la .iocikun. patfu la .ituk. .i la manam. mamta la .ituk. .i da rirni de .ijanai da patfu de .i da rirni de .ijanai da mamta de"
 
-echoHandler :: Snap ()
-echoHandler = do
+askHandler :: Snap ()
+askHandler = do
     param <- getParam "question"
-    maybe (writeBS "must specify echo/param in URL")
-          (writeBS . pack) (answerQuestion $ (unpack . decodeUtf8) (maybe (pack "ma rirni la .ituk.") (\s -> s) param))
+    maybe (writeJSON $ AnswerError "must specify echo/param in URL")
+          (\s -> (maybe
+           (writeJSON $ AnswerError "no result")
+           (\t -> (writeJSON $ AnswerResult t))
+           (answerQuestion $ (unpack . decodeUtf8) s)
+          )) param
+
+-- (answerQuestion $ (unpack . decodeUtf8) (maybe (pack "ma rirni la .ituk.") (\s -> s) param)
+-- (unpack . decodeUtf8) param -> String
