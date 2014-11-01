@@ -1,1 +1,1 @@
-web: ./dist/build/lojysamsef/lojysamsef
+web: cabal run -- -p $PORT
