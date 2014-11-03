@@ -40,10 +40,6 @@ askHandler = Snap.method Snap.POST $ do
            (answerQuestion $ (unpack . decodeUtf8) s)
           )) param
 
-answerQuestion :: String -> Maybe String
-answerQuestion q =
-  ask q $ readRules ".i da du da .i la .ualeis. cu nelci lo cirla .i la gromit. cu nelci lo cirla .i la .uendolen. cu nelci lo lanme .i da pendo de .ijanai tu'e da nadu de .i da nelci di .i de nelci di"
-
 data Person = Person {
   name :: String
   } deriving (Show)
@@ -67,6 +63,10 @@ data Info = Info {
   } deriving (Show)
 instance JSON.ToJSON Info where
   toJSON (Info s) = JSON.object ["application" JSON..= s]
+
+answerQuestion :: String -> Maybe String
+answerQuestion q =
+  ask q $ readRules ".i da du da .i la .ualeis. cu nelci lo cirla .i la gromit. cu nelci lo cirla .i la .uendolen. cu nelci lo lanme .i da pendo de .ijanai tu'e da nadu de .i da nelci di .i de nelci di"
 
 -- (answerQuestion $ (unpack . decodeUtf8) (maybe (pack "ma rirni la .ituk.") (\s -> s) param)
 -- (unpack . decodeUtf8) param -> String
