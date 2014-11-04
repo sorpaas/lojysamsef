@@ -1,3 +1,5 @@
+/ask/#Text      AskR    POST
+
 /static StaticR Static getStatic
 /auth   AuthR   Auth   getAuth
 
