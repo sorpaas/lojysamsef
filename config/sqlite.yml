@@ -1,0 +1,20 @@
+Default: &defaults
+  database: lojysamsef.sqlite3
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: lojysamsef_test.sqlite3
+  <<: *defaults
+
+Staging:
+  database: lojysamsef_staging.sqlite3
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: lojysamsef_production.sqlite3
+  poolsize: 100
+  <<: *defaults
